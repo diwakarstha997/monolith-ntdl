@@ -27,6 +27,16 @@ export const createTask = (taskObject) => {
   return response
 }
 
+// PATCH | Update a task
+export const updateTask = (id, taskObject) => {
+  const response = axios
+                    .patch(API_BASE_URL+TASK_ENPOINT+ `/${id}`, taskObject)
+                    .then(res => res.data)
+                    .catch(error => error)
+
+  return response
+}
+
 // DELETE | Delete a task
 export const deleteTaskRequest = (id) => {
   const response = axios

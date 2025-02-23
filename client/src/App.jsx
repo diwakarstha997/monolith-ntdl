@@ -3,27 +3,28 @@ import './App.css'
 import AddTaskForm from './components/AddTaskForm'
 import Header from './components/Header'
 import TaskListItem from './components/TaskLIstItem'
-import { deleteTaskRequest, getTasks } from './axios/taskAxios'
+import { deleteTaskRequest, getTasks, updateTask } from './axios/taskAxios'
 
 function App() {
   // State to store task list
   const [taskList, setTaskList] = useState([])
-  console.log("taskList", taskList);
 
   const entryTypeTask = taskList.filter(item => item.type === "Entry")
   const unwantedTypeTask = taskList.filter(item => item.type === "Unwanted")
 
   // Function to switch task type
   const switchTaskType = (taskId) => {
-    const updatedTaskList = taskList.map((task) => {
-      if(task.id === taskId){
-        task.type = task.type === "entry"? "unwanted" : "entry"
-      }
-  
-      return task
-    })
+    taskList.map(async (task) => {
+      if(task._id === taskId){
+        task.type = task.type === "Entry"? "Unwanted" : "Entry"
 
-    setTaskList(updatedTaskList)
+        const response = await updateTask(task._id, task)
+
+        if(response.status === "success"){
+          fetchTasks()
+        }
+      }
+    })
   }
 
   const fetchTasks = async() => {
